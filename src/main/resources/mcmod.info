@@ -1,0 +1,16 @@
+[
+{
+  "modid": "corn",
+  "name": "Corn Crop Mod",
+  "description": "Adds Meaningful Corn to Minecraft!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Cleverpanda714"],
+  "credits": "Loosely based off the suggestion by MForums user Shaddura",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
