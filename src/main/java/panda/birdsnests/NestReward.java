@@ -6,11 +6,21 @@ public class NestReward {
 	public Item item;
 	public int rarity;
 	public int passes;
+	public int meta;
 
 	public NestReward(Item item, int rarity, int pass)
 	{
 		this.item = item;
 		this.passes = pass;
+		this.meta = 0;
+		this.rarity = calculateRarity(rarity);
+	}
+
+	public NestReward(Item item, int rarity, int pass, int meta)
+	{
+		this.item = item;
+		this.passes = pass;
+		this.meta = meta;
 		this.rarity = calculateRarity(rarity);
 	}
 

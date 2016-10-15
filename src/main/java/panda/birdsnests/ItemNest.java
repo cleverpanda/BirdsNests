@@ -62,7 +62,7 @@ public class ItemNest extends Item {
 
 			if (world.rand.nextInt(reward.rarity) == 0)
 			{
-				EntityItem entityitem = new EntityItem(world, player.posX + 0.5D, player.posY + 1.5D, player.posZ + 0.5D, new ItemStack(reward.item, 1));
+				EntityItem entityitem = new EntityItem(world, player.posX + 0.5D, player.posY + 1.5D, player.posZ + 0.5D, new ItemStack(reward.item, 1, reward.meta));
 				entityitem.motionX = world.rand.nextGaussian() * f3;
 				entityitem.motionY = (0.2d);
 				entityitem.motionZ = world.rand.nextGaussian() * f3;

@@ -25,6 +25,20 @@ public class dropRegistry {
 		}
 	}
 
+	public static void register(Item output, int rarity, int pass, int meta)
+	{
+		NestReward entry = new NestReward(output, rarity, pass, meta);
+
+		if(output != null && !Contains(output, pass, meta))
+		{
+			rewards.add(entry);
+		}else
+		{
+			BirdsNests.log.error("An item was added to the Registry which was not an item");
+			BirdsNests.log.error(output.toString());
+		}
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static ArrayList<NestReward> getRewards()
 	{
@@ -46,12 +60,17 @@ public class dropRegistry {
 	
 	public static boolean Contains(Item output, int passes)
 	{
+		return Contains(output, passes, 0);
+	}
+
+	public static boolean Contains(Item output, int passes, int meta)
+	{
 		Iterator<NestReward> it = rewards.iterator();
 		while(it.hasNext())
 		{
 			NestReward reward = it.next();
 
-			if (reward.item == output && reward.passes == passes)
+			if (reward.item == output && reward.passes == passes && reward.meta == meta)
 			{
 				return true;
 			}
@@ -59,7 +78,7 @@ public class dropRegistry {
 
 		return false;
 	}
-
+	
 	public static boolean Contains(Item output)
 	{
 		Iterator<NestReward> it = rewards.iterator();
@@ -85,7 +104,22 @@ public class dropRegistry {
 		try
 		{
 			int rarity = Integer.parseInt(toStringArray[i]); 
-			register(item, rarity,i);
+			register(item, rarity, i);
+		}
+		catch(NumberFormatException numberFormatException)  
+		{
+			numberFormatException.printStackTrace(); 
+		}
+	}	
+}
+	
+	public static void registerConfigRarity(String[] configInput, Item item, int meta){
+	for(int i = 0; i < configInput.length; i++) 
+	{
+		try
+		{
+			int rarity = Integer.parseInt(configInput[i]); 
+			register(item, rarity, i, meta);
 		}
 		catch(NumberFormatException numberFormatException)  
 		{
