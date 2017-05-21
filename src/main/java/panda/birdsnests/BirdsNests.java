@@ -35,6 +35,7 @@ public class BirdsNests {
 	public static final Item nest = new ItemNest();
 	public static VersionChecker versionChecker;
 	public static boolean haveWarnedVersionOutOfDate = false;
+	public static String[] mega;
 	
 	public static Logger log;
 	
@@ -109,6 +110,9 @@ public class BirdsNests {
 		
 		rarity = config.get("Drops", "PRISMARINE_RARITIES", "60").getString();
 		dropRegistry.registerConfigRarity(rarity,Items.PRISMARINE_CRYSTALS);
+		
+		config.addCustomCategoryComment("Custom", "This is where your custom drops go.");
+		mega = config.get("Custom", "List", "", "Format 'ID_____META_____rarity1-rarity2-rarity3' \n To add apples with rarity of '10,20' it would be 'minecraft:apple_____0_____10-20' \n Separate items using ','").getString().split(",");
 		
 		config.addCustomCategoryComment("Compatability", "These options pertain to including content added by other mods. (Just mine for now)");
 		kernelsRarity = config.get("Compatability", "KERNELS_RARITY", "11").getString();
@@ -186,6 +190,22 @@ public class BirdsNests {
 				BirdsNests.log.error("STONES WERE NOT ADDED, BUT WERE SUPPOSED TO BE");
 			}
 		}
+	    
+	    if(mega != null && mega.length > 0 && mega[0].length() > 1){
+	    	for(int i=0; i < mega.length; i++){
+	    		String[] tempsplit = mega[i].split("_____");
+	    		if (tempsplit.length == 3){
+	    			if (Item.getByNameOrId(tempsplit[0]) != null){
+	    				dropRegistry.registerConfigRarity(tempsplit[2].split("-"),Item.getByNameOrId(tempsplit[0]),Integer.parseInt(tempsplit[1]));
+	    				BirdsNests.log.info("Custom drop " + tempsplit[0] + " added");
+	    			}else{
+	    				BirdsNests.log.error("UNABLE TO RESOLVE CUSTOM DROP " + tempsplit[0]);
+	    			}
+	    		}else{
+    				BirdsNests.log.error("UNABLE TO TRANSLATE CUSTOM DROP " + mega[i]);
+	    		}
+	    		}
+	    }
 	    
 	    if(event.getSide() == Side.CLIENT)
     	{
