@@ -19,7 +19,7 @@ public class HarvestLeafEventHandler {
 	public void onDrops(BlockEvent.BreakEvent event) {
 
 		Block theblock = event.getState().getBlock();
-		if (  theblock == Blocks.LEAVES || theblock == Blocks.LEAVES2||OreDictionary.getOres("treeLeaves").contains(new ItemStack(theblock)))
+		if (  theblock == Blocks.LEAVES || theblock == Blocks.LEAVES2||OreDictionary.getOres("treeLeaves").contains(new ItemStack(theblock)) || theblock instanceof BlockLeaves)
 		{
 			BlockLeaves leaves = (BlockLeaves)theblock;
 
