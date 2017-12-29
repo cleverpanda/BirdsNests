@@ -3,72 +3,79 @@ package panda.birdsnests;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
+import net.minecraft.stats.StatList;//ADD NEW STAT
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-
-import java.util.Iterator;
-import java.util.List;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 
 public class ItemNest extends Item {
 
+	private static final ResourceLocation LOOT_TABLE = new ResourceLocation("birdsnests:nest_loot");
+
 	public ItemNest(){
-		this.setMaxStackSize(1);
 		this.setCreativeTab(CreativeTabs.MISC);
 	}
-	
+
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-	    return super.getUnlocalizedName() + "." + (stack.getItemDamage() == 0 ? "default" : "32x");
+		return super.getUnlocalizedName() + "." + (stack.getItemDamage() == 0 ? "default" : "32x");
 	}
 
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-	    subItems.add(new ItemStack(itemIn, 1, (BirdsNests.use32) ? 1 : 0));
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+	{
+		if (this.isInCreativeTab(tab))
+		{
+			items.add(new ItemStack(this, 1, (BirdsNests.use32) ? 1 : 0));
+		}
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
-    {
-        if (!playerIn.capabilities.isCreativeMode)
-        {
-            --itemStackIn.stackSize;
-        }
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
+	{
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 
-        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		if (!playerIn.capabilities.isCreativeMode)
+		{
+			itemstack.shrink(1);
+		}
 
-        if (!worldIn.isRemote)
-        {
-        	handleRandomItems(worldIn,playerIn);
-        }
-        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
-    }
+		worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+
+		if (!worldIn.isRemote)
+		{
+			
+			handleRandomItems(worldIn,playerIn);
+		}
+		return new ActionResult(EnumActionResult.PASS, itemstack);
+	}
 
 
 	private void handleRandomItems(World world,EntityPlayer player) {
-		Iterator<NestReward> it = dropRegistry.getRewards().iterator();
-		double f3 = 0.05F;
+
+		LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LOOT_TABLE);
 		
-		while(it.hasNext())
+		LootContext.Builder builder = new LootContext.Builder((WorldServer)world);
+		 for (ItemStack itemstack : loottable.generateLootForPools(world.rand, builder.build()))
 		{
-			NestReward reward = it.next();
+			
+			EntityItem entityitem = new EntityItem(world, player.posX, player.posY + 1.5D, player.posZ, itemstack);
+			entityitem.motionX = world.rand.nextGaussian() * 0.05F;
+			entityitem.motionY = (0.2d);
+			entityitem.motionZ = world.rand.nextGaussian() * 0.05F;
+			//player.getHorizontalFacing()
 
-			if (world.rand.nextInt(reward.rarity) == 0)
-			{
-				EntityItem entityitem = new EntityItem(world, player.posX + 0.5D, player.posY + 1.5D, player.posZ + 0.5D, new ItemStack(reward.item, 1));
-				entityitem.motionX = world.rand.nextGaussian() * f3;
-				entityitem.motionY = (0.2d);
-				entityitem.motionZ = world.rand.nextGaussian() * f3;
-
-				world.spawnEntityInWorld(entityitem);
-			}
+			world.spawnEntity(entityitem);
 		}
 	}
 }

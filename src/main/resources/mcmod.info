@@ -1,14 +1,14 @@
 [
 {
-  "modid": "corn",
-  "name": "Corn Crop Mod",
-  "description": "Adds Meaningful Corn to Minecraft!",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "modid": "birdsnests",
+  "name": "Bird's nests",
+  "description": "pseudo-random reward events from chopping trees",
+  "version": "2.1.0",
+  "mcversion": "1.12.2",
   "url": "",
   "updateUrl": "",
   "authorList": ["Cleverpanda714"],
-  "credits": "Loosely based off the suggestion by MForums user Shaddura",
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
