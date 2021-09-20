@@ -1,0 +1,16 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+issueTrackerURL="https://github.com/KingOfTheGamesYT/BirdsNests"
+
+[[mods]]
+modId="birdsnests"
+version="2.1.1"
+displayName="Birds Nests"
+# updateJSONURL="http://myurl.me/"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/birds-nests"
+# logoFile="examplemod.png"
+authors="Cleverpanda714 for all the versions below 1.14.4 and RedRoseWarrior for all versions past 1.14.4"
+
+description='''
+pseudo-random reward events from chopping trees'''
+
