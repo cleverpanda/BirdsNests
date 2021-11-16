@@ -1,32 +1,35 @@
 package panda.birdsnests;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.Random;
 
 public class HarvestLeafEventHandler {
 
 	@SubscribeEvent
 	public void onDrops(BlockEvent.BreakEvent event) {
-
 		Block theblock = event.getState().getBlock();
-		if (  theblock == Blocks.LEAVES || theblock == Blocks.LEAVES2||OreDictionary.getOres("treeLeaves").contains(new ItemStack(theblock)) || theblock instanceof BlockLeaves)
+		Random random = new Random();
+		BlockPos pos = event.getPos();
+
+		double d0 = random.nextFloat() * 0.5D +0.25D;
+		double d1 = random.nextFloat() * 0.5D +0.25D;
+		double d2 = random.nextFloat() * 0.5D +0.25D;
+
+		if (theblock.isIn(BlockTags.LEAVES))
 		{
-			BlockPos pos = event.getPos();
-			if(event.getState().getProperties().containsKey(BirdsNests.DECAYABLE) && event.getState().getValue(BirdsNests.DECAYABLE) && event.getWorld().rand.nextInt(BirdsNests.nestRarity) == 0){ 
-				double d0 = event.getWorld().rand.nextFloat() * 0.5D +0.25D;
-				double d1 = event.getWorld().rand.nextFloat() * 0.5D +0.25D;
-				double d2 = event.getWorld().rand.nextFloat() * 0.5D +0.25D;
-				ItemStack stack = new ItemStack(BirdsNests.nest,1, BirdsNests.use32 ? 1 : 0);
-				EntityItem entityitem = new EntityItem(event.getWorld(), pos.getX()+d0, pos.getY()+d1, pos.getZ()+d2, stack);
-				event.getWorld().spawnEntity(entityitem);
+			if(random.nextInt(Config.nestRarity.get()) == 0){
+
+				ItemStack stack = new ItemStack(RegistryHandler.BIRDSNEST,1);
+				ItemEntity entityitem = new ItemEntity((ServerWorld) event.getWorld(), pos.getX()+d0, pos.getY()+d1, pos.getZ()+d2, stack);
+				event.getWorld().addEntity(entityitem);
 			}
 		}
 	}
