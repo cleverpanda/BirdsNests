@@ -1,8 +1,7 @@
 {
-    "type" : "minecraft:item",
     "pools": [
         {
-            "name": "nest_loot",
+	    "name": "nest_loot",
             "rolls": 1,
             "entries": [
                 {
@@ -18,8 +17,7 @@
                         }
                     ]
                 },
-
-                {
+				{
                     "type": "item",
                     "name": "minecraft:feather",
                     "functions": [
@@ -32,7 +30,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:egg",
                     "conditions": [
@@ -42,7 +40,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:string",
                     "functions": [
@@ -61,7 +59,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:bone",
                     "functions": [
@@ -80,9 +78,7 @@
                         }
                     ]
                 },
-
-
-                {
+				{
                     "type": "item",
                     "name": "minecraft:flint",
                     "conditions": [
@@ -92,8 +88,7 @@
                         }
                     ]
                 },
-
-                {
+				{
                     "type": "item",
                     "name": "minecraft:wheat_seeds",
                     "functions": [
@@ -112,7 +107,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:melon_seeds",
                     "conditions": [
@@ -122,7 +117,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:pumpkin_seeds",
                     "conditions": [
@@ -132,18 +127,7 @@
                         }
                     ]
                 },
-                {
-                    "type": "item",
-                    "name": "minecraft:beetroot_seeds",
-                    "conditions": [
-                        {
-                            "condition": "random_chance",
-                            "chance": 0.04
-                        }
-                    ]
-                },
-
-                {
+				{
                     "type": "item",
                     "name": "minecraft:diamond",
                     "conditions": [
@@ -153,7 +137,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:emerald",
                     "conditions": [
@@ -162,8 +146,17 @@
                             "chance": 0.0333
                         }
                     ]
+                },{
+                    "type": "item",
+                    "name": "minecraft:fish",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.03333
+                        }
+                    ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:prismarine_shard",
                     "conditions": [
@@ -173,48 +166,17 @@
                         }
                     ]
                 },
-
-                {
+				{
                     "type": "item",
-                    "name": "minecraft:tropical_fish",
+                    "name": "minecraft:beetroot_seeds",
                     "conditions": [
                         {
                             "condition": "random_chance",
-                            "chance": 0.05
+                            "chance": 0.04
                         }
                     ]
                 },
-                {
-                    "type": "item",
-                    "name": "minecraft:salmon",
-                    "conditions": [
-                        {
-                            "condition": "random_chance",
-                            "chance": 0.05
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "minecraft:pufferfish",
-                    "conditions": [
-                        {
-                            "condition": "random_chance",
-                            "chance": 0.05
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "minecraft:cod",
-                    "conditions": [
-                        {
-                            "condition": "random_chance",
-                            "chance": 0.05
-                        }
-                    ]
-                },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:redstone",
                     "functions": [
@@ -233,7 +195,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:glowstone_dust",
                     "functions": [
@@ -252,7 +214,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:blaze_powder",
                     "functions": [
@@ -271,7 +233,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:gold_nugget",
                     "functions": [
@@ -290,7 +252,7 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
                     "name": "minecraft:iron_nugget",
                     "functions": [
