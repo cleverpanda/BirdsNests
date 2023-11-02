@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "panda.birdsnests.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "birds_nests.refmap.json",
+  "mixins": [
+    "LeavesBlockMixin"
+  ],
+  "client": [
+    "LeavesBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
