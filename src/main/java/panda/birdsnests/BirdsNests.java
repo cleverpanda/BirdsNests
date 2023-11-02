@@ -1,9 +1,8 @@
 package panda.birdsnests;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -19,26 +18,23 @@ public class BirdsNests {
 
 	public static final String MOD_ID = "birdsnests";
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
-	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB.location(), MOD_ID);
 	public static final RegistryObject<Item> NEST = ITEMS.register("nest", ItemNest::new);
 
 	private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	public static ForgeConfigSpec COMMON_CONFIG;
 	public static ForgeConfigSpec.DoubleValue nestRarity;
 
-	public static final RegistryObject<CreativeModeTab> TAB = TABS.register("tab",
-			() -> CreativeModeTab.builder().title(Component.translatable("itemGroup." + MOD_ID))
-					.icon(() -> NEST.get().getDefaultInstance())
-					.title(Component.translatable("itemGroup." + MOD_ID))
-					.displayItems((params, output) -> ITEMS.getEntries()
-							.forEach(item -> output.accept(item.get().getDefaultInstance()))).build())
-			;
+	public static final CreativeModeTab TABS = new CreativeModeTab(MOD_ID) {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(NEST.get());
+		}
+	};
 
 
 	public BirdsNests() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		ITEMS.register(modEventBus);
-		TABS.register(modEventBus);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_CONFIG);
 	}
 
