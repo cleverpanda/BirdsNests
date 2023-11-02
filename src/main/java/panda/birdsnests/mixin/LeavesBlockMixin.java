@@ -30,6 +30,6 @@ public abstract class LeavesBlockMixin extends Block {
         for (ItemStack stack : eventLoot) {
             popResource(level, pos, stack);
         }
-        state.spawnAfterBreak((ServerLevel) level, pos, ItemStack.EMPTY, true);
+        state.spawnAfterBreak((ServerLevel) level, pos, ItemStack.EMPTY);
     }
 }

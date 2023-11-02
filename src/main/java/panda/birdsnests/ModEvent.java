@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -16,7 +16,7 @@ public class ModEvent {
     @SubscribeEvent
     public static void onBlock(BlockEvent.BreakEvent event) {
         BlockPos pos = event.getPos();
-        LevelAccessor level = event.getLevel();
+        LevelAccessor level = event.getWorld();
         BlockState blockState = level.getBlockState(pos);
         if (blockState.is(BlockTags.LEAVES)){
             if (getProbability(BirdsNests.nestRarity.get())){

@@ -50,8 +50,7 @@ public class ItemNest extends Item {
 		LootContext.Builder builder = new LootContext.Builder((ServerLevel) level);
 		LootContext lootcontext = builder.withParameter(LootContextParams.ORIGIN, player.getEyePosition()).withParameter(LootContextParams.THIS_ENTITY, player).create(LootContextParamSets.GIFT);
 
-		ObjectArrayList<ItemStack> randomItems = loottable.getRandomItems(lootcontext);
-		for (ItemStack itemStack : randomItems) {
+		for (ItemStack itemStack : loottable.getRandomItems(lootcontext)) {
 			level.addFreshEntity(new ItemEntity((ServerLevel) level, player.getX(), player.getY() + 1.5D, player.getZ(), itemStack));
 		}
 	}
