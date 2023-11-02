@@ -1,84 +1,49 @@
 package panda.birdsnests;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = BirdsNests.MODID, name = BirdsNests.NAME, version = BirdsNests.VERSION)
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+@Mod(BirdsNests.MOD_ID)
 public class BirdsNests {
 
-	public static final String MODID = "birdsnests";
-	public static final String NAME = "Bird's Nests";
-	public static final String VERSION = "2.1.0";
-	public static int nestRarity;
-	public static boolean use32;
-	public static boolean allowStacking;
-	public static float decayDropModifier;
-	public static boolean allowDecayDrops;
-	public static PropertyBool DECAYABLE = PropertyBool.create("decayable");
-	public static Item nest;
+	public static final String MOD_ID = "birdsnests";
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+	public static final RegistryObject<Item> NEST = ITEMS.register("nest", ItemNest::new);
 
-	@Instance(MODID)
-	public static BirdsNests instance;
+	private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+	public static ForgeConfigSpec COMMON_CONFIG;
+	public static ForgeConfigSpec.DoubleValue nestRarity;
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{ 
-		LootTableList.register(new ResourceLocation(MODID, "nest_loot"));
- 
-
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-
-		config.load();
-		nestRarity = config.getInt("NEST_DROP_RARITY", config.CATEGORY_GENERAL, 40, 0, 1000, "");
-		use32 = config.getBoolean("USE32_TEXTURE", config.CATEGORY_GENERAL, false, "");
-		allowStacking = config.getBoolean("ALLOW_STACKING", config.CATEGORY_GENERAL, false, "Allows to enable/disable nests stacking");
-		decayDropModifier = config.getFloat("NEST_DECAY_DROP_MULTIPLIER", config.CATEGORY_GENERAL, 1.25F, 0, 1000, "This makes nests more (or less ) rare from decaying leaves. Leave at 1 for no change.");
-		allowDecayDrops = config.getBoolean("ALLOW_DECAY_DROPS", config.CATEGORY_GENERAL, true, "Allows to enable/disable nests dropping from decaying leaves");
-		config.save();
-		
-		nest = new ItemNest();
-		if(!BirdsNests.allowStacking){
-        	nest.setMaxStackSize(1);
+	public static final CreativeModeTab TABS = new CreativeModeTab(MOD_ID) {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(NEST.get());
 		}
-		nest.setUnlocalizedName("birdsnest");
-		ForgeRegistries.ITEMS.register(nest.setRegistryName("birdsnest"));
-		MinecraftForge.EVENT_BUS.register(new HarvestLeafEventHandler());
-		MinecraftForge.EVENT_BUS.register(new DecayLeafEventHandler());
-		
-		if(event.getSide() == Side.CLIENT)
-		{
-			ModelResourceLocation	itemModelResourceLocation = new ModelResourceLocation("birdsnests:birdsnest", "inventory");
-			ModelResourceLocation itemModelResourceLocation32 = new ModelResourceLocation("birdsnests:birdsnest32", "inventory");
-			ModelBakery.registerItemVariants(nest, itemModelResourceLocation,itemModelResourceLocation32);
-		}
+	};
 
+
+	public BirdsNests() {
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		ITEMS.register(modEventBus);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_CONFIG);
 	}
 
-	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		if(event.getSide() == Side.CLIENT)
-		{
-			ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation("birdsnests:birdsnest", "inventory");
-			ModelResourceLocation itemModelResourceLocation32 = new ModelResourceLocation("birdsnests:birdsnest32", "inventory");
-
-			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(nest, 0, itemModelResourceLocation);
-			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(nest, 1, itemModelResourceLocation32);
-		}
-
+	static {
+		COMMON_BUILDER.comment("Bird Nest Settings").push("general");
+		nestRarity = COMMON_BUILDER.comment("The rarity of nests dropping from decaying leaves [default: 0.25]").defineInRange("NEST_RARITY", 0.25, 0.0, 1.0);
+		COMMON_BUILDER.pop();
+		COMMON_CONFIG = COMMON_BUILDER.build();
 	}
-
 }
+
+
