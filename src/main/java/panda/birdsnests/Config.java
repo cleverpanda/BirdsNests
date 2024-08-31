@@ -58,6 +58,6 @@ public class Config
     }
 
     @SubscribeEvent
-    public static void onReload(final ModConfig.ConfigReloading configEvent) { LOGGER.debug("Config Re-Loaded Event "); }
+    public static void onReload(final ModConfig.ModConfigEvent configEvent) { LOGGER.debug("Config Re-Loaded Event "); }
 
 }
